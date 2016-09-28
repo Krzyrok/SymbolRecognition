@@ -10,16 +10,10 @@ namespace SymbolRecognition.Configuration
             var container = new Container();
 
             RegisterCaliburnMicro(container);
-            RgisterServices(container);
 
             container.Verify();
 
             return container;
-        }
-
-        private static void RgisterServices(Container container)
-        {
-            container.Register<IUserService, UserService>();
         }
 
         private static void RegisterCaliburnMicro(Container container)
