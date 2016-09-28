@@ -1,7 +1,7 @@
 using Caliburn.Micro;
 using SimpleInjector;
 
-namespace SymbolRecognition
+namespace SymbolRecognition.Configuration
 {
     public static class SimpleInjectorInitialisation
     {
