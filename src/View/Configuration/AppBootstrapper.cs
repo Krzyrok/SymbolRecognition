@@ -4,9 +4,9 @@ using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using SimpleInjector;
-using SymbolRecognition.ViewModels;
+using View.ViewModels;
 
-namespace SymbolRecognition.Configuration
+namespace View.Configuration
 {
     public class AppBootstrapper : BootstrapperBase
     {

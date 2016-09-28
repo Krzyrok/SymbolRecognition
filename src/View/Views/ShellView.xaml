@@ -1,4 +1,4 @@
-<Window x:Class="SymbolRecognition.Views.ShellView"
+<Window x:Class="View.Views.ShellView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ewt="http://schemas.xceed.com/wpf/xaml/toolkit"

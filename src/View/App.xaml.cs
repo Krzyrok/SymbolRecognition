@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace SymbolRecognition
+namespace View
 {
     /// <summary>
     /// Interaction logic for App.xaml

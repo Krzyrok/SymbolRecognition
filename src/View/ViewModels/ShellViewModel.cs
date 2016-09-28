@@ -1,6 +1,6 @@
 using Caliburn.Micro;
 
-namespace SymbolRecognition.ViewModels
+namespace View.ViewModels
 {
     public class ShellViewModel : PropertyChangedBase
     {
