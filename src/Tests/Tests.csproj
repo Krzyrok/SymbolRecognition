@@ -70,6 +70,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Domain\NeuralNetworksTests.cs" />
+    <Compile Include="Integration\NeuralNetworkTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
