@@ -1,0 +1,16 @@
+<Window x:Class="SymbolRecognition.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Symbol recognition">
+    <Grid Background="White">
+        <TextBlock Text="Hello Caliburn Micro!"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   FontSize="20" />
+        <StackPanel Margin="0,0,610,421">
+            <TextBox x:Name="MyName"/>
+            <Button x:Name="ResetName">Reset name</Button>
+            <TextBlock x:Name="FullName"/>
+        </StackPanel>
+    </Grid>
+</Window>
