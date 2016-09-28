@@ -69,8 +69,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Domain\NeuralNetworksTests.cs" />
-    <Compile Include="Integration\NeuralNetworkTests.cs" />
+    <Compile Include="Domain\HopfieldNetworksTests.cs" />
+    <Compile Include="Integration\HopfieldNetworkTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

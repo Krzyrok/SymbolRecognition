@@ -2,7 +2,7 @@
 
 namespace Domain
 {
-    public class NeuralNetwork
+    public class HopfieldNetwork
     {
         public void Learn(IEnumerable<Symbol> symbolsToLearn)
         {
