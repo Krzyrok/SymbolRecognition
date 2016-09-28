@@ -4,14 +4,17 @@ namespace SymbolRecognition
 {
     public class ShellViewModel : PropertyChangedBase
     {
-        public ShellViewModel()
+        private readonly IUserService _userService;
+
+        public ShellViewModel(IUserService userService)
         {
+            _userService = userService;
             MyName = "Insert your name";
         }
 
         public string MyName { get; set; }
 
-        public string FullName => $"{MyName} LastName";
+        public string FullName => $"{MyName} {_userService.GetSampleUserLastName()}";
 
         public void ResetName()
         {
