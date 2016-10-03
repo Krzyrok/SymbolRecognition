@@ -69,7 +69,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Domain\HopfieldNetworksTests.cs" />
+    <Compile Include="Domain\HopfieldNetworkTests.cs" />
     <Compile Include="Domain\BipolarSymbolTests.cs" />
     <Compile Include="Integration\HopfieldNetworkTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

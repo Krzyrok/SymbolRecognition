@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Tests.Domain
 {
-    public class HopfieldNetworksTests
+    public class HopfieldNetworkTests
     {
         [Fact]
         public void ShouldCreateHopfieldNetwork()
