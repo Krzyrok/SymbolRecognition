@@ -2,11 +2,11 @@
 
 namespace Domain
 {
-    public class Symbol
+    public class BipolarSymbol
     {
-        private readonly int[,] value;
+        public int[,] Values { get; }
 
-        public Symbol(int[,] symbolBits)
+        public BipolarSymbol(int[,] symbolBits)
         {
             if (symbolBits.GetLength(0) != RowSize)
             {
@@ -18,14 +18,19 @@ namespace Domain
                 throw new ArgumentException("Incorrect column size");
             }
 
-            value = new int[RowSize, ColumnSize];
+            Values = new int[RowSize, ColumnSize];
             for (var row = 0; row < RowSize; row++)
             {
                 for (var column = 0; column < ColumnSize; column++)
                 {
-                    value[row, column] = symbolBits[row, column];
+                    Values[row, column] = BinaryToBipolar(symbolBits[row, column]);
                 }
             }
+        }
+
+        private static int BinaryToBipolar(int binary)
+        {
+            return binary == 1 ? 1 : -1;
         }
 
         public static int ColumnSize => 8;

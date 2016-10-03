@@ -4,20 +4,20 @@ namespace Domain
 {
     public static class SymbolFactory
     {
-        public static Symbol CreateFromDigit(int digit)
+        public static BipolarSymbol CreateFromDigit(int digit)
         {
             switch (digit)
             {
                 case 0:
-                    return new Symbol(Digit0);
+                    return new BipolarSymbol(Digit0);
                 case 1:
-                    return new Symbol(Digit1);
+                    return new BipolarSymbol(Digit1);
                 case 2:
-                    return new Symbol(Digit2);
+                    return new BipolarSymbol(Digit2);
                 case 3:
-                    return new Symbol(Digit3);
+                    return new BipolarSymbol(Digit3);
                 case 4:
-                    return new Symbol(Digit4);
+                    return new BipolarSymbol(Digit4);
                 default:
                     throw new ArgumentException("Incorrect digit");
             }

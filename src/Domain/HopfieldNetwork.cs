@@ -9,18 +9,25 @@ namespace Domain
         private int _numberOfNeurons;
         private int _numberOfStoredSymbols;
 
-        public void Learn(ICollection<Symbol> symbolsToLearn)
+        private int[,] _weights;
+
+        public int _maxIterations = 20;
+
+        public void Learn(ICollection<BipolarSymbol> symbolsToLearn)
         {
             if (symbolsToLearn == null || !symbolsToLearn.Any())
             {
                 throw new NoSymbollsPassedException();
             }
 
-            _numberOfNeurons = Symbol.RowSize * Symbol.ColumnSize;
             _numberOfStoredSymbols = symbolsToLearn.Count;
+            _numberOfNeurons = BipolarSymbol.RowSize * BipolarSymbol.ColumnSize;
+
+            _weights = new int[_numberOfNeurons, _numberOfNeurons];
+
         }
 
-        public bool TryRecognise(Symbol symbolToRecognise)
+        public bool TryRecognise(BipolarSymbol symbolToRecognise)
         {
             return true;
         }

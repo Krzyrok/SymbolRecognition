@@ -70,7 +70,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Domain\HopfieldNetworksTests.cs" />
-    <Compile Include="Domain\SymbolTests.cs" />
+    <Compile Include="Domain\BipolarSymbolTests.cs" />
     <Compile Include="Integration\HopfieldNetworkTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

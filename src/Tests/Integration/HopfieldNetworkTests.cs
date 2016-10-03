@@ -11,8 +11,8 @@ namespace Tests.Integration
         {
             // given
             var hopfieldNetwork = new HopfieldNetwork();
-            var symbolUsedForLearning = new Symbol(new int[Symbol.RowSize, Symbol.ColumnSize]);
-            var symbolsToLearn = new List<Symbol> { symbolUsedForLearning, new Symbol(new int[Symbol.RowSize, Symbol.ColumnSize]) };
+            var symbolUsedForLearning = new BipolarSymbol(new int[BipolarSymbol.RowSize, BipolarSymbol.ColumnSize]);
+            var symbolsToLearn = new List<BipolarSymbol> { symbolUsedForLearning, new BipolarSymbol(new int[BipolarSymbol.RowSize, BipolarSymbol.ColumnSize]) };
             hopfieldNetwork.Learn(symbolsToLearn);
 
             // when

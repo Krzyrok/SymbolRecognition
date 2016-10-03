@@ -21,12 +21,12 @@ namespace Tests.Domain
         public static IEnumerable<object[]> EmptySymbols = new List<object[]>
         {
             new object[] { null },
-            new object[] { new List<Symbol>() }
+            new object[] { new List<BipolarSymbol>() }
         };
 
         [Theory]
         [MemberData(nameof(EmptySymbols))]
-        public void ShouldRaiseErrorWhenLearningWithoutSymbols(List<Symbol> emptySymbols)
+        public void ShouldRaiseErrorWhenLearningWithoutSymbols(List<BipolarSymbol> emptySymbols)
         {
             // given
             var hopfieldNetwork = new HopfieldNetwork();
