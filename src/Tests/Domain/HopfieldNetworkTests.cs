@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Domain;
 using Domain.Exceptions;
@@ -41,34 +40,28 @@ namespace Tests.Domain
             Assert.Throws<NoSymbollsPassedException>(networkLearning);
         }
 
+        public static IEnumerable<object[]> DigitsToLearn = new List<object[]>
+        {
+            new object[] { new List<int> { 0 } },
+            new object[] { new List<int> { 3 } },
+            new object[] { new List<int> { 9 } },
+            new object[] { new List<int> { 0, 3, 9 } }
+        };
 
         [Theory]
-        [InlineData(0)]
-        [InlineData(3)]
-        [InlineData(9)]
-        public void ShouldCorrectlyLearnOneDigit(int digit)
+        [MemberData(nameof(DigitsToLearn))]
+        public void ShouldCorrectlyLearnDigits(List<int> digits)
         {
             // given
-            int[,] expectedWeights = HopfieldNetworkWeightsFactory.WeightsForHebbianLearningOfDigit(digit);
+            int[,] expectedWeights = HopfieldNetworkWeightsFactory.WeightsForHebbianLearningOfDigits(digits);
             var hopfieldNetwork = new HopfieldNetwork();
-            var symbolsToLearn = new Collection<BipolarSymbol> { SymbolFactory.CreateFromDigit(digit) };
+            ICollection<BipolarSymbol> symbolsToLearn = digits.Select(SymbolFactory.CreateFromDigit).ToList();
 
             // when
             hopfieldNetwork.Learn(symbolsToLearn);
 
             // then
             Assert.Equal(expectedWeights, hopfieldNetwork.Weights);
-
-        }
-
-        [Fact]
-        public void ShouldCorrectlyLearnFewDigits()
-        {
-            // given
-
-            // when
-
-            // then
         }
     }
 }
