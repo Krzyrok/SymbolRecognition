@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Domain;
 using Domain.Exceptions;
+using Tests.Domain.Helpers;
 using Xunit;
 
 namespace Tests.Domain
@@ -36,6 +39,36 @@ namespace Tests.Domain
 
             // then
             Assert.Throws<NoSymbollsPassedException>(networkLearning);
+        }
+
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(3)]
+        [InlineData(9)]
+        public void ShouldCorrectlyLearnOneDigit(int digit)
+        {
+            // given
+            int[,] expectedWeights = HopfieldNetworkWeightsFactory.WeightsForHebbianLearningOfDigit(digit);
+            var hopfieldNetwork = new HopfieldNetwork();
+            var symbolsToLearn = new Collection<BipolarSymbol> { SymbolFactory.CreateFromDigit(digit) };
+
+            // when
+            hopfieldNetwork.Learn(symbolsToLearn);
+
+            // then
+            Assert.Equal(expectedWeights, hopfieldNetwork.Weights);
+
+        }
+
+        [Fact]
+        public void ShouldCorrectlyLearnFewDigits()
+        {
+            // given
+
+            // when
+
+            // then
         }
     }
 }
