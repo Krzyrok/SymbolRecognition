@@ -7,10 +7,12 @@ namespace Domain
     public class HopfieldNetwork
     {
         private int NumberOfNeurons => _symbolsIn.GetLength(1); 
-        private int NumberOfStoredSymbols => _symbolsIn.GetLength(0); 
+        private int NumberOfStoredSymbols => _symbolsIn.GetLength(0);
 
+        // TODO: remove
         private int[,] _symbolsIn; // Bipolar
-        private int[,] _symbolsOut; // Binary
+        // TODO: remove
+        public int[] SymbolsOut { get; private set; } // Binary
 
         // TODO: remove getter and refactor UT
         // TODO: maybe Weights could be separate class - class for storing collection
@@ -83,7 +85,7 @@ namespace Domain
         private void StoreSymbolValuesForRecognising(BipolarSymbol symbolToRecognise)
         {
             _symbolsIn = new int[1, SymbolValues.RowSize * SymbolValues.ColumnSize];
-            _symbolsOut = new int[1, SymbolValues.RowSize * SymbolValues.ColumnSize];
+            SymbolsOut = new int[SymbolValues.RowSize * SymbolValues.ColumnSize];
 
             var digitValueIndex = 0;
             for (var rowIndex = 0; rowIndex < SymbolValues.RowSize; rowIndex++)
@@ -136,7 +138,7 @@ namespace Domain
             BipolarToBinary(neuronsInputs);
 
             for (var neuronIndex = 0; neuronIndex < NumberOfNeurons; neuronIndex++)
-                _symbolsOut[0, neuronIndex] = neuronsInputs[0, neuronIndex];
+                SymbolsOut[neuronIndex] = neuronsInputs[0, neuronIndex];
         }
 
         private static void BipolarToBinary(int[,] symbols)
