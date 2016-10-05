@@ -55,7 +55,7 @@ namespace Tests.Domain
             // given
             int[,] expectedWeights = HopfieldNetworkWeightsFactory.WeightsForHebbianLearningOfDigits(digits);
             var hopfieldNetwork = new HopfieldNetwork();
-            ICollection<BipolarSymbol> symbolsToLearn = digits.Select(SymbolFactory.CreateFromDigit).ToList();
+            ICollection<BipolarSymbol> symbolsToLearn = digits.Select(SymbolFactory.CreateBipolarFromDigit).ToList();
 
             // when
             hopfieldNetwork.Learn(symbolsToLearn);
@@ -69,15 +69,135 @@ namespace Tests.Domain
         {
             // given
             var hopfieldNetwork = new HopfieldNetwork();
-            var symbolsToLearn = new List<BipolarSymbol> { SymbolFactory.CreateFromDigit(1), SymbolFactory.CreateFromDigit(3) };
+            var symbolsToLearn = new List<BipolarSymbol> { SymbolFactory.CreateBipolarFromDigit(1), SymbolFactory.CreateBipolarFromDigit(3) };
             hopfieldNetwork.Learn(symbolsToLearn);
 
             // when
-            bool symbolIsRecognised = hopfieldNetwork.TryRecognise(SymbolFactory.CreateFromDigit(1));
+            bool symbolIsRecognised = hopfieldNetwork.TryRecognise(SymbolFactory.CreateBipolarFromDigit(1));
 
             // then
             Assert.True(symbolIsRecognised);
             Assert.Equal(0, hopfieldNetwork.IterationsCountOfRecognising);
+        }
+
+        [Fact]
+        public void ShouldRecogniseTheClosestLearnedSymbol()
+        {
+            // given
+            var hopfieldNetwork = new HopfieldNetwork();
+            var symbolsToLearn = new List<BipolarSymbol> { SymbolFactory.CreateBipolarFromDigit(1), SymbolFactory.CreateBipolarFromDigit(3) };
+            hopfieldNetwork.Learn(symbolsToLearn);
+
+            // when
+            bool symbolIsRecognised = hopfieldNetwork.TryRecognise(SymbolFactory.CreateBipolarFromDigit(2));
+
+            // then
+            Assert.True(symbolIsRecognised);
+            Assert.Equal(1, hopfieldNetwork.IterationsCountOfRecognising);
+            Assert.Equal(SymbolFactory.CreateBinaryFromDigit(3).ConvertToOneDimensionalArray(), hopfieldNetwork.SymbolsOut);
+        }
+
+        [Fact]
+        public void ShouldNotRecogniseCorrectSymbolWhenTooManyLearnedSmbols()
+        {
+            // given
+            var hopfieldNetwork = new HopfieldNetwork();
+            var symbolsToLearn = new List<BipolarSymbol>
+            {
+                SymbolFactory.CreateBipolarFromDigit(0),
+                SymbolFactory.CreateBipolarFromDigit(1),
+                SymbolFactory.CreateBipolarFromDigit(2),
+                SymbolFactory.CreateBipolarFromDigit(3),
+                SymbolFactory.CreateBipolarFromDigit(4),
+                SymbolFactory.CreateBipolarFromDigit(9)
+            };
+            hopfieldNetwork.Learn(symbolsToLearn);
+
+            // when
+            bool symbolIsRecognised = hopfieldNetwork.TryRecognise(SymbolFactory.CreateBipolarFromDigit(1));
+
+            // then
+            Assert.Equal(3, hopfieldNetwork.IterationsCountOfRecognising);
+            Assert.False(symbolIsRecognised);
+        }
+
+        [Fact]
+        public void ShouldNotRecogniseIncorrectSymbol()
+        {
+            // given
+            var hopfieldNetwork = new HopfieldNetwork();
+            var symbolsToLearn = new List<BipolarSymbol>
+            {
+                SymbolFactory.CreateBipolarFromDigit(1),
+                SymbolFactory.CreateBipolarFromDigit(2),
+                SymbolFactory.CreateBipolarFromDigit(4)
+            };
+            hopfieldNetwork.Learn(symbolsToLearn);
+
+            // when
+            bool symbolIsRecognised = hopfieldNetwork.TryRecognise(SymbolFactory.CreateBipolarFromDigit(9));
+
+            // then
+            Assert.Equal(1, hopfieldNetwork.IterationsCountOfRecognising);
+            Assert.False(symbolIsRecognised);
+        }
+
+        [Fact]
+        public void ShouldRecogniseInversedSymbol()
+        {
+            // given
+            var hopfieldNetwork = new HopfieldNetwork();
+            var symbolsToLearn = new List<BipolarSymbol>
+            {
+                SymbolFactory.CreateBipolarFromDigit(1),
+                SymbolFactory.CreateBipolarFromDigit(2),
+                SymbolFactory.CreateBipolarFromDigit(4)
+            };
+            hopfieldNetwork.Learn(symbolsToLearn);
+
+            BipolarSymbol inversedNumberTwo = SymbolFactory.CreateBipolarFromDigit(2);
+            inversedNumberTwo.Inverse();
+
+            // when
+            bool symbolIsRecognised = hopfieldNetwork.TryRecognise(inversedNumberTwo);
+
+            // then
+            Assert.Equal(0, hopfieldNetwork.IterationsCountOfRecognising);
+            Assert.True(symbolIsRecognised);
+
+            BinarySymbol expectedRecognisedSymbol = SymbolFactory.CreateBinaryFromDigit(2);
+            expectedRecognisedSymbol.Inverse();
+            Assert.Equal(expectedRecognisedSymbol.ConvertToOneDimensionalArray(), hopfieldNetwork.SymbolsOut);
+        }
+
+        [Fact(Skip = "tmp")]
+        public void ShouldRecogniseInversedSymbolWithNoises()
+        {
+            // given
+            var hopfieldNetwork = new HopfieldNetwork();
+            var symbolsToLearn = new List<BipolarSymbol>
+            {
+                SymbolFactory.CreateBipolarFromDigit(0),
+                SymbolFactory.CreateBipolarFromDigit(1),
+                SymbolFactory.CreateBipolarFromDigit(2)
+            };
+            hopfieldNetwork.Learn(symbolsToLearn);
+
+            // when
+            bool symbolIsRecognised = hopfieldNetwork.TryRecognise(IversedNumberOneWithNoises());
+
+            // then
+            Assert.Equal(1, hopfieldNetwork.IterationsCountOfRecognising);
+            Assert.True(symbolIsRecognised);
+
+            BinarySymbol expectedRecognisedSymbol = SymbolFactory.CreateBinaryFromDigit(1);
+            expectedRecognisedSymbol.Inverse();
+            Assert.Equal(expectedRecognisedSymbol.ConvertToOneDimensionalArray(), hopfieldNetwork.SymbolsOut);
+        }
+
+        private static BipolarSymbol IversedNumberOneWithNoises()
+        {
+            return new BipolarSymbol(new int[1,1]);
         }
     }
 }
