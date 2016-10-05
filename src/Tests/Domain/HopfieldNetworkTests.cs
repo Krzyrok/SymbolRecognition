@@ -69,12 +69,11 @@ namespace Tests.Domain
         {
             // given
             var hopfieldNetwork = new HopfieldNetwork();
-            var symbolUsedForLearning = new BipolarSymbol(new int[BipolarSymbol.RowSize, BipolarSymbol.ColumnSize]);
-            var symbolsToLearn = new List<BipolarSymbol> { symbolUsedForLearning, new BipolarSymbol(new int[BipolarSymbol.RowSize, BipolarSymbol.ColumnSize]) };
+            var symbolsToLearn = new List<BipolarSymbol> { SymbolFactory.CreateFromDigit(1), SymbolFactory.CreateFromDigit(3) };
             hopfieldNetwork.Learn(symbolsToLearn);
 
             // when
-            bool symbolIsRecognised = hopfieldNetwork.TryRecognise(symbolUsedForLearning);
+            bool symbolIsRecognised = hopfieldNetwork.TryRecognise(SymbolFactory.CreateFromDigit(1));
 
             // then
             Assert.True(symbolIsRecognised);
