@@ -47,7 +47,6 @@
     <Compile Include="Neuron.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BipolarSymbol.cs" />
-    <Compile Include="SymbolFactory.cs" />
     <Compile Include="SymbolValues.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
