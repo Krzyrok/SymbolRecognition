@@ -6,16 +6,15 @@ namespace Domain
 {
     public class HopfieldNetwork
     {
-        private int NumberOfNeurons => _symbolsIn.GetLength(1); // N; TODO: remove comment
-        private int NumberOfStoredSymbols => _symbolsIn.GetLength(0); // M; TODO: remove comment
+        private int NumberOfNeurons => _symbolsIn.GetLength(1); 
+        private int NumberOfStoredSymbols => _symbolsIn.GetLength(0); 
 
         private int[,] _symbolsIn; // Bipolar
         private int[,] _symbolsOut; // Binary
-        private const int MaxIterations = 20; // 
 
         // TODO: remove getter and refactor UT
         // TODO: maybe Weights could be separate class - class for storing collection
-        public int[,] Weights { get; private set; } // W
+        public int[,] Weights { get; private set; }
 
         public void Learn(ICollection<BipolarSymbol> symbolsToLearn)
         {
@@ -81,7 +80,7 @@ namespace Domain
         private void StoreSymbolValuesForRecognising(BipolarSymbol symbolToRecognise)
         {
             _symbolsIn = new int[1, BipolarSymbol.RowSize * BipolarSymbol.ColumnSize];
-            _symbolsOut = new int[MaxIterations, BipolarSymbol.RowSize * BipolarSymbol.ColumnSize];
+            _symbolsOut = new int[1, BipolarSymbol.RowSize * BipolarSymbol.ColumnSize];
 
             var digitValueIndex = 0;
             for (var rowIndex = 0; rowIndex < BipolarSymbol.RowSize; rowIndex++)
@@ -96,14 +95,12 @@ namespace Domain
         private void Recognise()
         {
             var iterationsCountOfRecognising = 0;
-            var delta = 0;
 
-            // M == NumberOfStoredSymbols, N == NumberOfNeurons; M == 1 bo rozpoznajemy tylko jeden symbol
-            var neuronsInputs = new int[1, NumberOfNeurons];  // X
+            var neuronsInputs = new int[1, NumberOfNeurons]; 
             for (var neuronIndex = 0; neuronIndex < NumberOfNeurons; neuronIndex++)
-                neuronsInputs[0, neuronIndex] = _symbolsIn[0, neuronIndex]; // patterns
+                neuronsInputs[0, neuronIndex] = _symbolsIn[0, neuronIndex]; 
 
-            var neurons = new Neuron[NumberOfNeurons]; // cells
+            var neurons = new Neuron[NumberOfNeurons];
             for (var neuronIndex = 0; neuronIndex < NumberOfNeurons; neuronIndex++)
                 neurons[neuronIndex] = new Neuron();
 
@@ -113,7 +110,7 @@ namespace Domain
 
                 for (var neuronNumber = 0; neuronNumber < NumberOfNeurons; neuronNumber++)
                 {
-                    neurons[neuronNumber].WeightsSum(neuronsInputs, Weights, 0, neuronNumber);  // threshold can be = X[m, i] = symbolValues[0, neuronNumber]
+                    neurons[neuronNumber].WeightsSum(neuronsInputs, Weights, 0, neuronNumber);
                     neurons[neuronNumber].ActivationFunction(neurons[neuronNumber].WeightsSumOutput, neuronsInputs[0, neuronNumber]);
 
                     if (neuronsInputs[0, neuronNumber] != neurons[neuronNumber].ActivationFunctionOutput)
