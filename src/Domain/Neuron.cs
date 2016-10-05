@@ -2,39 +2,48 @@
 {
     public class Neuron
     {
-        public int WeightsSumOutput; // U
-        public int ActivationFunctionOutput; // Y
-
-        public void ActivationFunction(int aggregatedFeedbackSignals, int inputSignalBeforeResponse)
+        public int CalculateOutput(int[,] neuronsInputs, int[,] weights, int neuronNumber)
         {
+            int aggregatedFeedbackSignals = AggregateFeedbackSignals(neuronsInputs, weights, neuronNumber);
+            int neuronOutput = CalculateActivationFunction(aggregatedFeedbackSignals, neuronsInputs[0, neuronNumber]);
+
+            return neuronOutput;
+        }
+
+        private static int CalculateActivationFunction(int aggregatedFeedbackSignals, int neuronOuputSignalFromPreviousIteration)
+        {
+            var activationFunctionResult = 1;
+
             if (aggregatedFeedbackSignals > 0)
             {
-                ActivationFunctionOutput = 1;
+                activationFunctionResult = 1;
             }
             else if (aggregatedFeedbackSignals == 0)
             {
-                if (inputSignalBeforeResponse > 0)
-                    ActivationFunctionOutput = 1;
+                if (neuronOuputSignalFromPreviousIteration > 0)
+                    activationFunctionResult = 1;
                 else
-                    ActivationFunctionOutput = -1;
+                    activationFunctionResult = -1;
             }
             else if (aggregatedFeedbackSignals < 0)
             {
-                ActivationFunctionOutput = -1;
+                activationFunctionResult = -1;
             }
+
+            return activationFunctionResult;
         }
 
-        // int[,]X - bipolar or binary patterns array
-        // int[,] weights - before response
-        // TODO: X as one dimensional array
+        // TODO: neuronsInputs as one dimensional array
         // TODO: remove threshold because unused
-        public void WeightsSum(int[,] X, int[,] weights, int patternNumber, int neuronNumber)
+        private static int AggregateFeedbackSignals(int[,] neuronsInputs, int[,] weights, int neuronNumber)
         {
-            WeightsSumOutput = X[patternNumber, neuronNumber];
+            int aggregateFeedbackSignals = neuronsInputs[0, neuronNumber]; // TODO: check what if without this step
 
             int weightsDimension = weights.GetLength(0);
             for (var weightIndex = 0; weightIndex < weightsDimension; weightIndex++)
-                WeightsSumOutput += weights[neuronNumber, weightIndex] * X[patternNumber, weightIndex];
+                aggregateFeedbackSignals += weights[neuronNumber, weightIndex] * neuronsInputs[0, weightIndex];
+
+            return aggregateFeedbackSignals;
         }
     }
 }

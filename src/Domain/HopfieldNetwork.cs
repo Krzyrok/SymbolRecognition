@@ -110,19 +110,18 @@ namespace Domain
 
                 for (var neuronNumber = 0; neuronNumber < NumberOfNeurons; neuronNumber++)
                 {
-                    neurons[neuronNumber].WeightsSum(neuronsInputs, Weights, 0, neuronNumber);
-                    neurons[neuronNumber].ActivationFunction(neurons[neuronNumber].WeightsSumOutput, neuronsInputs[0, neuronNumber]);
+                    int neuronOutput = neurons[neuronNumber].CalculateOutput(neuronsInputs, Weights, neuronNumber);
 
-                    if (neuronsInputs[0, neuronNumber] != neurons[neuronNumber].ActivationFunctionOutput)
+                    if (neuronsInputs[0, neuronNumber] != neuronOutput)
                     {
-                        neuronsInputs[0, neuronNumber] = neurons[neuronNumber].ActivationFunctionOutput;
+                        neuronsInputs[0, neuronNumber] = neuronOutput;
                         neuronsInputsWereChanged = true;
                     } 
                 }
 
                 if (neuronsInputsWereChanged)
                 {
-                    iterationsCountOfRecognising++; // TODO: remove because for debugging purposes
+                    iterationsCountOfRecognising++; // TODO: remove because for debugging purposes (and UT - but UT should be changed)
                 }
 
                 if (!neuronsInputsWereChanged)
