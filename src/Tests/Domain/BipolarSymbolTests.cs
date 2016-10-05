@@ -48,9 +48,7 @@ namespace Tests.Domain
             var bipolarSymbol = new BipolarSymbol(symbolValues);
 
             // then
-            IEnumerable<int> bipolarSymbolValues = from int value in bipolarSymbol.Values.RawValues
-                                                   select value;
-            Assert.True(bipolarSymbolValues.All(value => value == -1));
+            Assert.True(bipolarSymbol.ConvertToOneDimensionalArray().All(value => value == -1));
         }
 
         private static int[,] SymbolValuesWithZeroes()
