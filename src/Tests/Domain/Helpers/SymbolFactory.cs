@@ -1,11 +1,22 @@
 using System;
 using System.Collections.Generic;
+using Domain;
 
-namespace Domain
+namespace Tests.Domain.Helpers
 {
     public static class SymbolFactory
     {
-        public static BipolarSymbol CreateFromDigit(int digit)
+        public static BipolarSymbol CreateBipolarFromDigit(int digit)
+        {
+            return new BipolarSymbol(GetDigitValues(digit));
+        }
+
+        public static BinarySymbol CreateBinaryFromDigit(int digit)
+        {
+            return new BinarySymbol(GetDigitValues(digit));
+        }
+
+        private static int[,] GetDigitValues(int digit)
         {
             int[,] digitValues;
             bool digitFound = Digits.TryGetValue(digit, out digitValues);
@@ -14,7 +25,7 @@ namespace Domain
                 throw new ArgumentException("incorrect digit");
             }
 
-            return new BipolarSymbol(digitValues);
+            return digitValues;
         }
 
         private static readonly Dictionary<int, int[,]> Digits = new Dictionary<int, int[,]>
