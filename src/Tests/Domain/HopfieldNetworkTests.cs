@@ -98,7 +98,7 @@ namespace Tests.Domain
         }
 
         [Fact]
-        public void ShouldNotRecogniseCorrectSymbolWhenTooManyLearnedSmbols()
+        public void ShouldNotRecogniseCorrectSymbolWhenTooManyLearnedSymbols()
         {
             // given
             var hopfieldNetwork = new HopfieldNetwork();
@@ -118,7 +118,13 @@ namespace Tests.Domain
 
             // then
             Assert.Equal(3, hopfieldNetwork.IterationsCountOfRecognising);
+            Assert.Equal(OutputForUnrecognisedDigitOne(), hopfieldNetwork.SymbolsOut);
             Assert.False(symbolIsRecognised);
+        }
+
+        private static int[] OutputForUnrecognisedDigitOne()
+        {
+            return new[] {0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1,1,0,0,0,1,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
         }
 
         [Fact]
@@ -139,7 +145,13 @@ namespace Tests.Domain
 
             // then
             Assert.Equal(1, hopfieldNetwork.IterationsCountOfRecognising);
+            Assert.Equal(OutputForUnrecognisedDigitNine(), hopfieldNetwork.SymbolsOut);
             Assert.False(symbolIsRecognised);
+        }
+
+        private static int[] OutputForUnrecognisedDigitNine()
+        {
+            return new[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,1,1,1,0,1,1,0,0,1,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
         }
 
         [Fact]
@@ -170,7 +182,7 @@ namespace Tests.Domain
             Assert.Equal(expectedRecognisedSymbol.ConvertToOneDimensionalArray(), hopfieldNetwork.SymbolsOut);
         }
 
-        [Fact(Skip = "tmp")]
+        [Fact]
         public void ShouldRecogniseInversedSymbolWithNoises()
         {
             // given
@@ -197,7 +209,16 @@ namespace Tests.Domain
 
         private static BipolarSymbol IversedNumberOneWithNoises()
         {
-            return new BipolarSymbol(new int[1,1]);
+            return new BipolarSymbol(new[,] {
+                {1,1,1,1,0,1,1,1,0,1,0,0},
+                {0,1,0,0,1,0,1,1,1,0,0,1},
+                {0,1,1,1,0,0,1,0,0,0,1,0},
+                {1,0,0,0,0,0,0,0,1,1,0,1},
+                {1,0,0,0,0,0,0,0,0,0,1,1},
+                {1,1,1,1,1,1,1,1,1,0,1,1},
+                {1,1,1,1,1,1,1,1,1,0,1,1},
+                {1,1,1,1,1,1,1,1,1,1,1,1}
+            });
         }
     }
 }
