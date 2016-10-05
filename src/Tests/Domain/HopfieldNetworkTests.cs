@@ -77,6 +77,7 @@ namespace Tests.Domain
 
             // then
             Assert.True(symbolIsRecognised);
+            Assert.Equal(0, hopfieldNetwork.IterationsCountOfRecognising);
         }
     }
 }

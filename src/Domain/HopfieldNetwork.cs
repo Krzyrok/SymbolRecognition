@@ -16,6 +16,9 @@ namespace Domain
         // TODO: maybe Weights could be separate class - class for storing collection
         public int[,] Weights { get; private set; }
 
+        // TODO: only for debugging and first tage testing - remove later
+        public int IterationsCountOfRecognising { get; private set; }
+
         public void Learn(ICollection<BipolarSymbol> symbolsToLearn)
         {
             if (symbolsToLearn == null || !symbolsToLearn.Any())
@@ -94,7 +97,7 @@ namespace Domain
 
         private void Recognise()
         {
-            var iterationsCountOfRecognising = 0;
+            IterationsCountOfRecognising = 0;
 
             var neuronsInputs = new int[1, NumberOfNeurons]; 
             for (var neuronIndex = 0; neuronIndex < NumberOfNeurons; neuronIndex++)
@@ -121,7 +124,7 @@ namespace Domain
 
                 if (neuronsInputsWereChanged)
                 {
-                    iterationsCountOfRecognising++; // TODO: remove because for debugging purposes (and UT - but UT should be changed)
+                    IterationsCountOfRecognising++; // TODO: remove because for debugging purposes (and UT - but UT should be changed)
                 }
 
                 if (!neuronsInputsWereChanged)
