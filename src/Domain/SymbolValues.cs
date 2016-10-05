@@ -9,13 +9,9 @@ namespace Domain
 
         public static int RowSize => 8;
 
-        public int[,] RawValues { get; }
+        private readonly int[,] _rawValues;
 
-        public int this[int row, int column]
-        {
-            get { return RawValues[row, column]; }
-            set { RawValues[row, column] = value; }
-        }
+        public int this[int row, int column] => _rawValues[row, column];
 
         public SymbolValues(int[,] values, Func<int, int> convertValue)
         {
@@ -29,13 +25,39 @@ namespace Domain
                 throw new ArgumentException("Incorrect column size");
             }
 
-            RawValues = new int[RowSize, ColumnSize];
+            _rawValues = new int[RowSize, ColumnSize];
 
             for (var row = 0; row < RowSize; row++)
             {
                 for (var column = 0; column < ColumnSize; column++)
                 {
-                    RawValues[row, column] = convertValue(values[row, column]);
+                    _rawValues[row, column] = convertValue(values[row, column]);
+                }
+            }
+        }
+
+        public int[] ConvertToOneDimensionalArray()
+        {
+            var values = new int[RowSize * ColumnSize];
+            var valueIndex = 0;
+            for (var row = 0; row < RowSize; row++)
+            {
+                for (var column = 0; column < ColumnSize; column++)
+                {
+                    values[valueIndex++] = this[row, column];
+                }
+            }
+
+            return values;
+        }
+
+        public void Inverse(Func<int, int> inverseValue)
+        {
+            for (var row = 0; row < RowSize; row++)
+            {
+                for (var column = 0; column < ColumnSize; column++)
+                {
+                    _rawValues[row, column] = inverseValue(_rawValues[row, column]);
                 }
             }
         }

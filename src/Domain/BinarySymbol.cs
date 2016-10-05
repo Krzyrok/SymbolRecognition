@@ -13,5 +13,14 @@
         {
             return bipolarValue == 1 ? 1 : 0;
         }
+
+        public int[] ConvertToOneDimensionalArray() => Values.ConvertToOneDimensionalArray();
+
+        public void Inverse() => Values.Inverse(InverseValue);
+
+        private static int InverseValue(int value)
+        {
+            return value == 1 ? 0 : 1;
+        }
     }
 }

@@ -13,5 +13,14 @@
         {
             return binary == 1 ? 1 : -1;
         }
+
+        public int[] ConvertToOneDimensionalArray() => Values.ConvertToOneDimensionalArray();
+
+        public void Inverse() => Values.Inverse(InverseValue);
+
+        private static int InverseValue(int value)
+        {
+            return value == 1 ? -1 : 1;
+        }
     }
 }
