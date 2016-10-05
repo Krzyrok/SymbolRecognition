@@ -8,11 +8,8 @@ namespace Tests.Domain
         [Fact]
         public void ShouldConvertBinaryToBipolarValues()
         {
-            // given
-            int[,] symbolValues = SymbolValuesWithZeroes();
-
             // when
-            var bipolarSymbol = new BipolarSymbol(symbolValues);
+            var bipolarSymbol = new BipolarSymbol(SymbolValuesWithZeroes());
 
             // then
             Assert.True(bipolarSymbol.ConvertToOneDimensionalArray().All(value => value == -1));
@@ -27,23 +24,48 @@ namespace Tests.Domain
         public void ShouldDoesNotChangeCorrectValues()
         {
             // given
-            var symbolValues = new int[SymbolValues.RowSize, SymbolValues.ColumnSize];
             const int rowWithNegativeValue = 0;
             const int rowWithPositiveValue = 1;
-            for (var column = 0; column < SymbolValues.ColumnSize; column++)
-            {
-                symbolValues[rowWithNegativeValue, column] = -1;
-                symbolValues[rowWithPositiveValue, column] = 1;
-            }
 
             // when
-            var bipolarSymbol = new BipolarSymbol(symbolValues);
+            var bipolarSymbol = new BipolarSymbol(SymbolValuesWithVariedValues(rowWithNegativeValue, rowWithPositiveValue));
 
             // then
             for (var column = 0; column < SymbolValues.ColumnSize; column++)
             {
                 Assert.Equal(-1, bipolarSymbol.Values[rowWithNegativeValue, column]);
                 Assert.Equal(1, bipolarSymbol.Values[rowWithPositiveValue, column]);
+            }
+        }
+
+        private static int[,] SymbolValuesWithVariedValues(int rowWithNegativeValue, int rowWithPositiveValue)
+        {
+            var symbolValues = new int[SymbolValues.RowSize, SymbolValues.ColumnSize];
+            for (var column = 0; column < SymbolValues.ColumnSize; column++)
+            {
+                symbolValues[rowWithNegativeValue, column] = -1;
+                symbolValues[rowWithPositiveValue, column] = 1;
+            }
+
+            return symbolValues;
+        }
+
+        [Fact]
+        public void ShouldInverseValues()
+        {
+            // given
+            const int rowWithOriginallyNegativeValue = 0;
+            const int rowWithOriginallyPositiveValue = 1;
+            var bipolarSymbol = new BipolarSymbol(SymbolValuesWithVariedValues(rowWithOriginallyNegativeValue, rowWithOriginallyPositiveValue));
+
+            // when
+            bipolarSymbol.Inverse();
+
+            // then
+            for (var column = 0; column < SymbolValues.ColumnSize; column++)
+            {
+                Assert.Equal(1, bipolarSymbol.Values[rowWithOriginallyNegativeValue, column]);
+                Assert.Equal(-1, bipolarSymbol.Values[rowWithOriginallyPositiveValue, column]);
             }
         }
     }
