@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BinarySymbol.cs" />
     <Compile Include="Exceptions\DomainException.cs" />
     <Compile Include="Exceptions\NoSymbollsPassedException.cs" />
     <Compile Include="HopfieldNetwork.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BipolarSymbol.cs" />
     <Compile Include="SymbolFactory.cs" />
+    <Compile Include="SymbolValues.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

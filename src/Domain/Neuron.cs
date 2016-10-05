@@ -37,7 +37,8 @@
         // TODO: remove threshold because unused
         private static int AggregateFeedbackSignals(int[,] neuronsInputs, int[,] weights, int neuronNumber)
         {
-            int aggregateFeedbackSignals = neuronsInputs[0, neuronNumber]; // TODO: check what if without this step
+            int aggregateFeedbackSignals = 0; // TODO: check what if without this step
+            //int aggregateFeedbackSignals = neuronsInputs[0, neuronNumber]; // TODO: check what if without this step
 
             int weightsDimension = weights.GetLength(0);
             for (var weightIndex = 0; weightIndex < weightsDimension; weightIndex++)

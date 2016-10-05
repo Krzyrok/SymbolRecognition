@@ -32,15 +32,15 @@ namespace Domain
 
         private void StoreSymbolsValuesForLearning(ICollection<BipolarSymbol> symbolsToLearn)
         {
-            _symbolsIn = new int[symbolsToLearn.Count, BipolarSymbol.RowSize * BipolarSymbol.ColumnSize];
+            _symbolsIn = new int[symbolsToLearn.Count, SymbolValues.RowSize * SymbolValues.ColumnSize];
 
             var symbolIndex = 0;
             foreach (BipolarSymbol bipolarSymbol in symbolsToLearn)
             {
                 var valueIndex = 0;
-                for (var rowIndex = 0; rowIndex < BipolarSymbol.RowSize; rowIndex++)
+                for (var rowIndex = 0; rowIndex < SymbolValues.RowSize; rowIndex++)
                 {
-                    for (var columnIndex = 0; columnIndex < BipolarSymbol.ColumnSize; columnIndex++)
+                    for (var columnIndex = 0; columnIndex < SymbolValues.ColumnSize; columnIndex++)
                     {
                         _symbolsIn[symbolIndex, valueIndex++] = bipolarSymbol.Values[rowIndex, columnIndex];
                     }
@@ -82,13 +82,13 @@ namespace Domain
 
         private void StoreSymbolValuesForRecognising(BipolarSymbol symbolToRecognise)
         {
-            _symbolsIn = new int[1, BipolarSymbol.RowSize * BipolarSymbol.ColumnSize];
-            _symbolsOut = new int[1, BipolarSymbol.RowSize * BipolarSymbol.ColumnSize];
+            _symbolsIn = new int[1, SymbolValues.RowSize * SymbolValues.ColumnSize];
+            _symbolsOut = new int[1, SymbolValues.RowSize * SymbolValues.ColumnSize];
 
             var digitValueIndex = 0;
-            for (var rowIndex = 0; rowIndex < BipolarSymbol.RowSize; rowIndex++)
+            for (var rowIndex = 0; rowIndex < SymbolValues.RowSize; rowIndex++)
             {
-                for (var columnIndex = 0; columnIndex < BipolarSymbol.ColumnSize; columnIndex++)
+                for (var columnIndex = 0; columnIndex < SymbolValues.ColumnSize; columnIndex++)
                 {
                     _symbolsIn[0, digitValueIndex++] = symbolToRecognise.Values[rowIndex, columnIndex];
                 }

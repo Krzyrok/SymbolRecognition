@@ -12,7 +12,7 @@ namespace Tests.Domain
         public void ShouldRaiseErrorWhenIncorrectSymbolRowLength()
         {
             // given
-            var symbolValues = new int[BipolarSymbol.RowSize + 1, BipolarSymbol.ColumnSize];
+            var symbolValues = new int[SymbolValues.RowSize + 1, SymbolValues.ColumnSize];
 
             // when
             Action creatingSymbol = () => new BipolarSymbol(symbolValues);
@@ -27,7 +27,7 @@ namespace Tests.Domain
         public void ShouldRaiseErrorWhenIncorrectSymbolColumnLength()
         {
             // given
-            var symbolValues = new int[BipolarSymbol.RowSize, BipolarSymbol.ColumnSize + 1];
+            var symbolValues = new int[SymbolValues.RowSize, SymbolValues.ColumnSize + 1];
 
             // when
             Action creatingSymbol = () => new BipolarSymbol(symbolValues);
@@ -48,14 +48,14 @@ namespace Tests.Domain
             var bipolarSymbol = new BipolarSymbol(symbolValues);
 
             // then
-            IEnumerable<int> bipolarSymbolValues = from int value in bipolarSymbol.Values
+            IEnumerable<int> bipolarSymbolValues = from int value in bipolarSymbol.Values.RawValues
                                                    select value;
             Assert.True(bipolarSymbolValues.All(value => value == -1));
         }
 
         private static int[,] SymbolValuesWithZeroes()
         {
-            return new int[BipolarSymbol.RowSize, BipolarSymbol.ColumnSize];
+            return new int[SymbolValues.RowSize, SymbolValues.ColumnSize];
         }
 
 
@@ -63,10 +63,10 @@ namespace Tests.Domain
         public void ShouldDoesNotChangeCorrectValues()
         {
             // given
-            var symbolValues = new int[BipolarSymbol.RowSize, BipolarSymbol.ColumnSize];
+            var symbolValues = new int[SymbolValues.RowSize, SymbolValues.ColumnSize];
             const int rowWithNegativeValue = 0;
             const int rowWithPositiveValue = 1;
-            for (var column = 0; column < BipolarSymbol.ColumnSize; column++)
+            for (var column = 0; column < SymbolValues.ColumnSize; column++)
             {
                 symbolValues[rowWithNegativeValue, column] = -1;
                 symbolValues[rowWithPositiveValue, column] = 1;
@@ -76,7 +76,7 @@ namespace Tests.Domain
             var bipolarSymbol = new BipolarSymbol(symbolValues);
 
             // then
-            for (var column = 0; column < BipolarSymbol.ColumnSize; column++)
+            for (var column = 0; column < SymbolValues.ColumnSize; column++)
             {
                 Assert.Equal(-1, bipolarSymbol.Values[rowWithNegativeValue, column]);
                 Assert.Equal(1, bipolarSymbol.Values[rowWithPositiveValue, column]);
