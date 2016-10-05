@@ -1,43 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Domain;
 using Xunit;
 namespace Tests.Domain
 {
     public class BipolarSymbolTests
     {
-
-        [Fact]
-        public void ShouldRaiseErrorWhenIncorrectSymbolRowLength()
-        {
-            // given
-            var symbolValues = new int[SymbolValues.RowSize + 1, SymbolValues.ColumnSize];
-
-            // when
-            Action creatingSymbol = () => new BipolarSymbol(symbolValues);
-
-            // then
-            var exception = Assert.Throws<ArgumentException>(creatingSymbol);
-            Assert.True(exception.Message.Contains("row"));
-        }
-
-
-        [Fact]
-        public void ShouldRaiseErrorWhenIncorrectSymbolColumnLength()
-        {
-            // given
-            var symbolValues = new int[SymbolValues.RowSize, SymbolValues.ColumnSize + 1];
-
-            // when
-            Action creatingSymbol = () => new BipolarSymbol(symbolValues);
-
-            // then
-            var exception = Assert.Throws<ArgumentException>(creatingSymbol);
-            Assert.True(exception.Message.Contains("column"));
-        }
-
-
         [Fact]
         public void ShouldConvertBinaryToBipolarValues()
         {
@@ -55,7 +22,6 @@ namespace Tests.Domain
         {
             return new int[SymbolValues.RowSize, SymbolValues.ColumnSize];
         }
-
 
         [Fact]
         public void ShouldDoesNotChangeCorrectValues()

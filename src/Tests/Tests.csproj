@@ -73,6 +73,7 @@
     <Compile Include="Domain\Helpers\SymbolFactory.cs" />
     <Compile Include="Domain\HopfieldNetworkTests.cs" />
     <Compile Include="Domain\BipolarSymbolTests.cs" />
+    <Compile Include="Domain\SymbolValuesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
