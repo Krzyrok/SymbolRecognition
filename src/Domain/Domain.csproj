@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BinarySymbol.cs" />
     <Compile Include="Exceptions\DomainException.cs" />
     <Compile Include="Exceptions\NoSymbollsPassedException.cs" />
     <Compile Include="HopfieldNetwork.cs" />
