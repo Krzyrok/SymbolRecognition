@@ -55,7 +55,7 @@ namespace Tests.Domain
             // given
             int[,] expectedWeights = HopfieldNetworkWeightsFactory.WeightsForHebbianLearningOfDigits(digits);
             var hopfieldNetwork = new HopfieldNetwork();
-            ICollection<BipolarSymbol> symbolsToLearn = digits.Select(SymbolFactory.CreateBipolarFromDigit).ToList();
+            IList<BipolarSymbol> symbolsToLearn = digits.Select(SymbolFactory.CreateBipolarFromDigit).ToList();
 
             // when
             hopfieldNetwork.Learn(symbolsToLearn);

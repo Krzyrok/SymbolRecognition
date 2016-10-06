@@ -6,11 +6,10 @@ namespace Domain
 {
     public class HopfieldNetwork
     {
-        private int NumberOfNeurons => _symbolsIn.GetLength(1); 
-        private int NumberOfStoredSymbols => _symbolsIn.GetLength(0);
+        private static int NumberOfNeurons => SymbolValues.RowSize * SymbolValues.ColumnSize; 
+        private int NumberOfStoredSymbols => _learnedSymbols.Count;
 
-        // TODO: remove
-        private int[,] _symbolsIn; // Bipolar
+        private IList<BipolarSymbol> _learnedSymbols;
         // TODO: remove
         public int[] SymbolsOut { get; private set; } // Binary
 
@@ -21,39 +20,18 @@ namespace Domain
         // TODO: only for debugging and first tage testing - remove later
         public int IterationsCountOfRecognising { get; private set; }
 
-        public void Learn(ICollection<BipolarSymbol> symbolsToLearn)
+        public void Learn(IList<BipolarSymbol> symbolsToLearn)
         {
             if (symbolsToLearn == null || !symbolsToLearn.Any())
             {
                 throw new NoSymbollsPassedException();
             }
-
-            StoreSymbolsValuesForLearning(symbolsToLearn);
-            LearnWithHebb();
-        }
-
-        private void StoreSymbolsValuesForLearning(ICollection<BipolarSymbol> symbolsToLearn)
-        {
-            // TODO: change this to storing just Symbols (instead of raw values)
-            _symbolsIn = new int[symbolsToLearn.Count, SymbolValues.RowSize * SymbolValues.ColumnSize];
-            var symbolIndex = 0;
-            foreach (BipolarSymbol bipolarSymbol in symbolsToLearn)
-            {
-                var valueIndex = 0;
-                for (var rowIndex = 0; rowIndex < SymbolValues.RowSize; rowIndex++)
-                {
-                    for (var columnIndex = 0; columnIndex < SymbolValues.ColumnSize; columnIndex++)
-                    {
-                        _symbolsIn[symbolIndex, valueIndex++] = bipolarSymbol.Values[rowIndex, columnIndex];
-                    }
-                }
-
-                symbolIndex++;
-            }
+            _learnedSymbols = symbolsToLearn;
+            LearnWithHebb(_learnedSymbols);
         }
 
         // TODO: draw diagram (which neuron with which, what indexes for weights corresponds to them) and refactor this
-        private void LearnWithHebb()
+        private void LearnWithHebb(IList<BipolarSymbol> symbolsToLearn)
         {
             Weights = new int[NumberOfNeurons, NumberOfNeurons];
 
@@ -66,7 +44,8 @@ namespace Domain
                     {
                         for (var storedSymbolIndex = 0; storedSymbolIndex < NumberOfStoredSymbols; storedSymbolIndex++)
                         {
-                            Weights[weightFirstIndex, weightSecondIndex] += _symbolsIn[storedSymbolIndex, weightFirstIndex] * _symbolsIn[storedSymbolIndex, weightSecondIndex];
+                            int[] symbolValues = symbolsToLearn[storedSymbolIndex].ConvertToOneDimensionalArray();
+                            Weights[weightFirstIndex, weightSecondIndex] += symbolValues[weightFirstIndex] * symbolValues[weightSecondIndex];
                         }
                     }
                     Weights[weightSecondIndex, weightFirstIndex] = Weights[weightFirstIndex, weightSecondIndex];
@@ -133,10 +112,11 @@ namespace Domain
         {
             for (var symbolIndex = 0; symbolIndex < NumberOfStoredSymbols; symbolIndex++)
             {
+                int[] valuesOfLearnedSymbol = _learnedSymbols[symbolIndex].ConvertToOneDimensionalArray();
                 var symbolIsRecognised = true;
                 for (var symbolValueIndex = 0; symbolValueIndex < NumberOfNeurons; symbolValueIndex++)
                 {
-                    if (_symbolsIn[symbolIndex, symbolValueIndex] != networkBipolarOutput[symbolValueIndex])
+                    if (valuesOfLearnedSymbol[symbolValueIndex] != networkBipolarOutput[symbolValueIndex])
                     {
                         symbolIsRecognised = false;
                         break;
@@ -151,7 +131,7 @@ namespace Domain
                 symbolIsRecognised = true;
                 for (var symbolValueIndex = 0; symbolValueIndex < NumberOfNeurons; symbolValueIndex++)
                 {
-                    if (_symbolsIn[symbolIndex, symbolValueIndex] != BipolarSymbol.InverseValue(networkBipolarOutput[symbolValueIndex]))
+                    if (valuesOfLearnedSymbol[symbolValueIndex] != BipolarSymbol.InverseValue(networkBipolarOutput[symbolValueIndex]))
                     {
                         symbolIsRecognised = false;
                         break;
