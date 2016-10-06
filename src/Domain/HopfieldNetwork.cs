@@ -11,6 +11,7 @@ namespace Domain
 
         // TODO: remove
         private int[,] _symbolsIn; // Bipolar
+        private int[,] _learnedSymbols; // Binary
         // TODO: remove
         public int[] SymbolsOut { get; private set; } // Binary
 
@@ -34,9 +35,27 @@ namespace Domain
 
         private void StoreSymbolsValuesForLearning(ICollection<BipolarSymbol> symbolsToLearn)
         {
-            _symbolsIn = new int[symbolsToLearn.Count, SymbolValues.RowSize * SymbolValues.ColumnSize];
-
+            IEnumerable<BinarySymbol> binarySymbols = symbolsToLearn.Select(bipolarSymbol => new BinarySymbol(bipolarSymbol));
             var symbolIndex = 0;
+            _learnedSymbols = new int[symbolsToLearn.Count, SymbolValues.RowSize * SymbolValues.ColumnSize];
+            foreach (BinarySymbol binarySymbol in binarySymbols)
+            {
+                var valueIndex = 0;
+                for (var rowIndex = 0; rowIndex < SymbolValues.RowSize; rowIndex++)
+                {
+                    for (var columnIndex = 0; columnIndex < SymbolValues.ColumnSize; columnIndex++)
+                    {
+                        _learnedSymbols[symbolIndex, valueIndex++] = binarySymbol.Values[rowIndex, columnIndex];
+                    }
+                }
+
+                symbolIndex++;
+            }
+
+
+            // TODO: change this to storing just Symbols (instead of raw values)
+            _symbolsIn = new int[symbolsToLearn.Count, SymbolValues.RowSize * SymbolValues.ColumnSize];
+            symbolIndex = 0;
             foreach (BipolarSymbol bipolarSymbol in symbolsToLearn)
             {
                 var valueIndex = 0;
@@ -76,34 +95,20 @@ namespace Domain
 
         public bool TryRecognise(BipolarSymbol symbolToRecognise)
         {
-            StoreSymbolValuesForRecognising(symbolToRecognise);
-            Recognise();
+            Recognise(symbolToRecognise.ConvertToOneDimensionalArray());
 
             return true;
         }
 
-        private void StoreSymbolValuesForRecognising(BipolarSymbol symbolToRecognise)
+        private void Recognise(IReadOnlyList<int> symbolValues)
         {
-            _symbolsIn = new int[1, SymbolValues.RowSize * SymbolValues.ColumnSize];
             SymbolsOut = new int[SymbolValues.RowSize * SymbolValues.ColumnSize];
 
-            var digitValueIndex = 0;
-            for (var rowIndex = 0; rowIndex < SymbolValues.RowSize; rowIndex++)
-            {
-                for (var columnIndex = 0; columnIndex < SymbolValues.ColumnSize; columnIndex++)
-                {
-                    _symbolsIn[0, digitValueIndex++] = symbolToRecognise.Values[rowIndex, columnIndex];
-                }
-            }
-        }
-
-        private void Recognise()
-        {
             IterationsCountOfRecognising = 0;
 
-            var neuronsInputs = new int[1, NumberOfNeurons]; 
+            var neuronsInputs = new int[NumberOfNeurons]; 
             for (var neuronIndex = 0; neuronIndex < NumberOfNeurons; neuronIndex++)
-                neuronsInputs[0, neuronIndex] = _symbolsIn[0, neuronIndex]; 
+                neuronsInputs[neuronIndex] = symbolValues[neuronIndex]; 
 
             var neurons = new Neuron[NumberOfNeurons];
             for (var neuronIndex = 0; neuronIndex < NumberOfNeurons; neuronIndex++)
@@ -117,9 +122,9 @@ namespace Domain
                 {
                     int neuronOutput = neurons[neuronNumber].CalculateOutput(neuronsInputs, Weights, neuronNumber);
 
-                    if (neuronsInputs[0, neuronNumber] != neuronOutput)
+                    if (neuronsInputs[neuronNumber] != neuronOutput)
                     {
-                        neuronsInputs[0, neuronNumber] = neuronOutput;
+                        neuronsInputs[neuronNumber] = neuronOutput;
                         neuronsInputsWereChanged = true;
                     } 
                 }
@@ -138,18 +143,15 @@ namespace Domain
             BipolarToBinary(neuronsInputs);
 
             for (var neuronIndex = 0; neuronIndex < NumberOfNeurons; neuronIndex++)
-                SymbolsOut[neuronIndex] = neuronsInputs[0, neuronIndex];
+                SymbolsOut[neuronIndex] = neuronsInputs[neuronIndex];
         }
 
-        private static void BipolarToBinary(int[,] symbols)
+        private static void BipolarToBinary(IList<int> values)
         {
-            int rowsCount = symbols.GetLength(0);
-            int columnsCount = symbols.GetLength(1);
-            for (var row = 0; row < rowsCount; row++)
-                for (var column = 0; column < columnsCount; column++)
-                {
-                    symbols[row, column] = BipolarToBinary(symbols[row, column]);
-                }
+            for (var index = 0; index < values.Count; index++)
+            {
+                values[index] = BipolarToBinary(values[index]);
+            }
         }
 
         private static int BipolarToBinary(int bipolarValue)

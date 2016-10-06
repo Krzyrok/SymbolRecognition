@@ -9,9 +9,10 @@ namespace Domain
 
         public static int RowSize => 8;
 
-        private readonly int[,] _rawValues;
+        // TODO: make this as private
+        public int[,] RawValues { get; }
 
-        public int this[int row, int column] => _rawValues[row, column];
+        public int this[int row, int column] => RawValues[row, column];
 
         public SymbolValues(int[,] values, Func<int, int> convertValue)
         {
@@ -25,13 +26,13 @@ namespace Domain
                 throw new ArgumentException("Incorrect column size");
             }
 
-            _rawValues = new int[RowSize, ColumnSize];
+            RawValues = new int[RowSize, ColumnSize];
 
             for (var row = 0; row < RowSize; row++)
             {
                 for (var column = 0; column < ColumnSize; column++)
                 {
-                    _rawValues[row, column] = convertValue(values[row, column]);
+                    RawValues[row, column] = convertValue(values[row, column]);
                 }
             }
         }
@@ -57,7 +58,7 @@ namespace Domain
             {
                 for (var column = 0; column < ColumnSize; column++)
                 {
-                    _rawValues[row, column] = inverseValue(_rawValues[row, column]);
+                    RawValues[row, column] = inverseValue(RawValues[row, column]);
                 }
             }
         }

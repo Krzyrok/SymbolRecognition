@@ -9,6 +9,10 @@
             Values = new SymbolValues(symbolValues, BipolarToBinary);
         }
 
+        public BinarySymbol(BipolarSymbol bipolarSymbol) : this(bipolarSymbol.Values.RawValues)
+        {
+        }
+
         private static int BipolarToBinary(int bipolarValue)
         {
             return bipolarValue == 1 ? 1 : 0;

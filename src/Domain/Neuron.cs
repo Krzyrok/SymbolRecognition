@@ -1,11 +1,13 @@
-﻿namespace Domain
+﻿using System.Collections.Generic;
+
+namespace Domain
 {
     public class Neuron
     {
-        public int CalculateOutput(int[,] neuronsInputs, int[,] weights, int neuronNumber)
+        public int CalculateOutput(int[] neuronsInputs, int[,] weights, int neuronNumber)
         {
             int aggregatedFeedbackSignals = AggregateFeedbackSignals(neuronsInputs, weights, neuronNumber);
-            int neuronOutput = CalculateActivationFunction(aggregatedFeedbackSignals, neuronsInputs[0, neuronNumber]);
+            int neuronOutput = CalculateActivationFunction(aggregatedFeedbackSignals, neuronsInputs[neuronNumber]);
 
             return neuronOutput;
         }
@@ -35,14 +37,14 @@
 
         // TODO: neuronsInputs as one dimensional array
         // TODO: remove threshold because unused
-        private static int AggregateFeedbackSignals(int[,] neuronsInputs, int[,] weights, int neuronNumber)
+        private static int AggregateFeedbackSignals(IReadOnlyList<int> neuronsInputs, int[,] weights, int neuronNumber)
         {
             //int aggregateFeedbackSignals = 0; 
-            int aggregateFeedbackSignals = neuronsInputs[0, neuronNumber]; // TODO: check what if without this step
+            int aggregateFeedbackSignals = neuronsInputs[neuronNumber]; // TODO: check what if without this step
 
             int weightsDimension = weights.GetLength(0);
             for (var weightIndex = 0; weightIndex < weightsDimension; weightIndex++)
-                aggregateFeedbackSignals += weights[neuronNumber, weightIndex] * neuronsInputs[0, weightIndex];
+                aggregateFeedbackSignals += weights[neuronNumber, weightIndex] * neuronsInputs[weightIndex];
 
             return aggregateFeedbackSignals;
         }
