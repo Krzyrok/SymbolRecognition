@@ -76,12 +76,10 @@ namespace Domain
 
         public bool TryRecognise(BipolarSymbol symbolToRecognise)
         {
-            Recognise(symbolToRecognise.ConvertToOneDimensionalArray());
-
-            return true;
+            return Recognise(symbolToRecognise.ConvertToOneDimensionalArray());
         }
 
-        private void Recognise(IReadOnlyList<int> symbolValues)
+        private bool Recognise(IReadOnlyList<int> symbolValues)
         {
             SymbolsOut = new int[SymbolValues.RowSize * SymbolValues.ColumnSize];
 
@@ -121,10 +119,52 @@ namespace Domain
                 }
             }
 
+            bool symbolIsRecognised = SymbolIsRecognised(neuronsInputs);
+
             BipolarToBinary(neuronsInputs);
 
             for (var neuronIndex = 0; neuronIndex < NumberOfNeurons; neuronIndex++)
                 SymbolsOut[neuronIndex] = neuronsInputs[neuronIndex];
+
+            return symbolIsRecognised;
+        }
+
+        private bool SymbolIsRecognised(IReadOnlyList<int> networkBipolarOutput)
+        {
+            for (var symbolIndex = 0; symbolIndex < NumberOfStoredSymbols; symbolIndex++)
+            {
+                var symbolIsRecognised = true;
+                for (var symbolValueIndex = 0; symbolValueIndex < NumberOfNeurons; symbolValueIndex++)
+                {
+                    if (_symbolsIn[symbolIndex, symbolValueIndex] != networkBipolarOutput[symbolValueIndex])
+                    {
+                        symbolIsRecognised = false;
+                        break;
+                    }
+                }
+
+                if (symbolIsRecognised)
+                {
+                    return true;
+                }
+
+                symbolIsRecognised = true;
+                for (var symbolValueIndex = 0; symbolValueIndex < NumberOfNeurons; symbolValueIndex++)
+                {
+                    if (_symbolsIn[symbolIndex, symbolValueIndex] != BipolarSymbol.InverseValue(networkBipolarOutput[symbolValueIndex]))
+                    {
+                        symbolIsRecognised = false;
+                        break;
+                    }
+                }
+
+                if (symbolIsRecognised)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static void BipolarToBinary(IList<int> values)

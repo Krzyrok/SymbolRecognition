@@ -18,7 +18,8 @@
 
         public void Inverse() => Values.Inverse(InverseValue);
 
-        private static int InverseValue(int value)
+        // TODO: make as private
+        public static int InverseValue(int value)
         {
             return value == 1 ? -1 : 1;
         }
