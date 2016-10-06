@@ -11,11 +11,6 @@ namespace Tests.Domain.Helpers
             return new BipolarSymbol(GetDigitValues(digit));
         }
 
-        public static BinarySymbol CreateBinaryFromDigit(int digit)
-        {
-            return new BinarySymbol(GetDigitValues(digit));
-        }
-
         private static int[,] GetDigitValues(int digit)
         {
             int[,] digitValues;

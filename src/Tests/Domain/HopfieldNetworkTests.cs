@@ -94,7 +94,7 @@ namespace Tests.Domain
             // then
             Assert.True(symbolIsRecognised);
             Assert.Equal(1, hopfieldNetwork.IterationsCountOfRecognising);
-            Assert.Equal(SymbolFactory.CreateBinaryFromDigit(3).ConvertToOneDimensionalArray(), hopfieldNetwork.SymbolsOut);
+            Assert.Equal(SymbolFactory.CreateBipolarFromDigit(3).ConvertToOneDimensionalArray(), hopfieldNetwork.SymbolsOut);
         }
 
         [Fact]
@@ -124,7 +124,7 @@ namespace Tests.Domain
 
         private static int[] OutputForUnrecognisedDigitOne()
         {
-            return new[] {0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1,1,0,0,0,1,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+            return new[] {-1,-1,1,-1,-1,-1,-1,-1,1,-1,-1,-1,-1,1,1,-1,-1,-1,-1,-1,1,1,-1,-1,-1,1,-1,-1,-1,1,-1,-1,-1,1,-1,-1,-1,1,-1,-1,-1,1,-1,-1,-1,1,-1,-1,-1,1,-1,-1,1,1,-1,-1,-1,1,-1,-1,-1,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,1,1,1,-1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
         }
 
         [Fact]
@@ -151,7 +151,7 @@ namespace Tests.Domain
 
         private static int[] OutputForUnrecognisedDigitNine()
         {
-            return new[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,1,1,1,0,1,1,0,0,1,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+            return new[] {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1,-1,-1,-1,-1,1,-1,-1,1,-1,-1,1,-1,-1,-1,1,1,1,-1,1,1,-1,-1,1,-1,-1,-1,1,1,1,1,1,1,1,1,1,-1,-1,-1,1,1,1,1,-1,-1,-1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
         }
 
         [Fact]
@@ -177,7 +177,7 @@ namespace Tests.Domain
             Assert.Equal(0, hopfieldNetwork.IterationsCountOfRecognising);
             Assert.True(symbolIsRecognised);
 
-            BinarySymbol expectedRecognisedSymbol = SymbolFactory.CreateBinaryFromDigit(2);
+            BipolarSymbol expectedRecognisedSymbol = SymbolFactory.CreateBipolarFromDigit(2);
             expectedRecognisedSymbol.Inverse();
             Assert.Equal(expectedRecognisedSymbol.ConvertToOneDimensionalArray(), hopfieldNetwork.SymbolsOut);
         }
@@ -202,7 +202,7 @@ namespace Tests.Domain
             Assert.Equal(1, hopfieldNetwork.IterationsCountOfRecognising);
             Assert.True(symbolIsRecognised);
 
-            BinarySymbol expectedRecognisedSymbol = SymbolFactory.CreateBinaryFromDigit(1);
+            BipolarSymbol expectedRecognisedSymbol = SymbolFactory.CreateBipolarFromDigit(1);
             expectedRecognisedSymbol.Inverse();
             Assert.Equal(expectedRecognisedSymbol.ConvertToOneDimensionalArray(), hopfieldNetwork.SymbolsOut);
         }

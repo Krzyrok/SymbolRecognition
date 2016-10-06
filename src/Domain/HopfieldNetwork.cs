@@ -100,8 +100,6 @@ namespace Domain
 
             bool symbolIsRecognised = SymbolIsRecognised(neuronsInputs);
 
-            BipolarToBinary(neuronsInputs);
-
             for (var neuronIndex = 0; neuronIndex < NumberOfNeurons; neuronIndex++)
                 SymbolsOut[neuronIndex] = neuronsInputs[neuronIndex];
 
@@ -145,19 +143,6 @@ namespace Domain
             }
 
             return false;
-        }
-
-        private static void BipolarToBinary(IList<int> values)
-        {
-            for (var index = 0; index < values.Count; index++)
-            {
-                values[index] = BipolarToBinary(values[index]);
-            }
-        }
-
-        private static int BipolarToBinary(int bipolarValue)
-        {
-            return bipolarValue == 1 ? 1 : 0;
         }
     }
 }
