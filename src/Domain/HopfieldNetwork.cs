@@ -11,7 +11,6 @@ namespace Domain
 
         // TODO: remove
         private int[,] _symbolsIn; // Bipolar
-        private int[,] _learnedSymbols; // Binary
         // TODO: remove
         public int[] SymbolsOut { get; private set; } // Binary
 
@@ -35,27 +34,9 @@ namespace Domain
 
         private void StoreSymbolsValuesForLearning(ICollection<BipolarSymbol> symbolsToLearn)
         {
-            IEnumerable<BinarySymbol> binarySymbols = symbolsToLearn.Select(bipolarSymbol => new BinarySymbol(bipolarSymbol));
-            var symbolIndex = 0;
-            _learnedSymbols = new int[symbolsToLearn.Count, SymbolValues.RowSize * SymbolValues.ColumnSize];
-            foreach (BinarySymbol binarySymbol in binarySymbols)
-            {
-                var valueIndex = 0;
-                for (var rowIndex = 0; rowIndex < SymbolValues.RowSize; rowIndex++)
-                {
-                    for (var columnIndex = 0; columnIndex < SymbolValues.ColumnSize; columnIndex++)
-                    {
-                        _learnedSymbols[symbolIndex, valueIndex++] = binarySymbol.Values[rowIndex, columnIndex];
-                    }
-                }
-
-                symbolIndex++;
-            }
-
-
             // TODO: change this to storing just Symbols (instead of raw values)
             _symbolsIn = new int[symbolsToLearn.Count, SymbolValues.RowSize * SymbolValues.ColumnSize];
-            symbolIndex = 0;
+            var symbolIndex = 0;
             foreach (BipolarSymbol bipolarSymbol in symbolsToLearn)
             {
                 var valueIndex = 0;
