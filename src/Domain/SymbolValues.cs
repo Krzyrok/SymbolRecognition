@@ -5,9 +5,9 @@ namespace Domain
     public class SymbolValues 
     {
         // TODO: inverse ColumnSize and RowSize - ColumnSize => 8, RowSize => 12; also change factory method: SymbolFactory.CreateFromDigit!!!!
-        public static int ColumnSize => 12;
+        public static int ColumnSize => 8;
 
-        public static int RowSize => 8;
+        public static int RowSize => 12;
 
         // TODO: make this as private
         public int[,] RawValues { get; }
